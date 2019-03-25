@@ -1,23 +1,21 @@
 ---
 
-# Install choco packages
+- name: Install dependencies
+  win_chocolatey:
+    name:
+    with_items:
+      - git
+      - nodejs
+      - notepadplusplus
+      - steamcmd
+      - python
+      - vcredist2015
+      - vcredist2013
+      - vcbuildtools
+      - directx
+  register: choco_result
 
 
-# Reboot
-
-
-
-
-- include: set_facts.yml
-  when: windows_iis_role is defined
-
-- include: features.yml
-  when: windows_iis_role is defined
-
-- include: websites.yml
-  when: >
-        windows_iis_role is defined and
-        windows_iis_websites is defined and
-        windows_iis_web_server
-- include: reboot.yml
-when: windows_iis_role is defined
+- name: Reboot if packages were changed
+  win_reboot:
+  when: choco_result.changed
