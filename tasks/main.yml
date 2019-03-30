@@ -21,12 +21,12 @@
     # Steam game id 403240 is Squad Dedicated Server
     # Steam game id 393380 is Squad Client
   - name: Install and Configure Squad
-    win_command: steamcmd +login anonymous +force_install_dir "C:\servers\squad_server" +app_update 403240 validate +quit
+    win_command: "steamcmd +login anonymous +force_install_dir \"C:\\servers\\squad_server\" +app_update 403240 validate +quit"
     register: squadinstall_result
     when: not is-squad-installed
 
   - name: Download mods
-    win_command: "steamcmd +login anonymous +force_install_dir "C:\servers\squad_server" +workshop_download_item 393380 {{ item }} +quit"
+    win_command: "steamcmd +login anonymous +force_install_dir \"C:\\servers\\squad_server\" +workshop_download_item 393380 {{ item }} +quit"
     with_items: mods
     register: mod_installation_result
 
