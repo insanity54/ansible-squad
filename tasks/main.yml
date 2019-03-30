@@ -1,21 +1,38 @@
 ---
 
-- name: Install dependencies
-  win_chocolatey:
-    name:
-    with_items:
-      - git
-      - nodejs
-      - notepadplusplus
-      - steamcmd
-      - python
-      - vcredist2015
-      - vcredist2013
-      - vcbuildtools
-      - directx
-  register: choco_result
+  - name: Install dependencies
+    win_chocolatey:
+      name:
+      with_items:
+        - steamcmd
+        - vcredist2015
+        - vcredist2013
+        - vcbuildtools
+        - directx
+    register: choco_result
 
 
-- name: Reboot if packages were changed
-  win_reboot:
-  when: choco_result.changed
+  - name: Reboot if packages were changed
+    win_reboot:
+    when: choco_result.changed
+
+
+    # Run steamcmd and install Squad
+    # Steam game id 403240 is Squad Dedicated Server
+    # Steam game id 393380 is Squad Client
+  - name: Install and Configure Squad
+    win_command: steamcmd +login anonymous +force_install_dir "C:\servers\squad_server" +app_update 403240 validate +quit
+    register: squadinstall_result
+    when: not is-squad-installed
+
+  - name: Download mods
+    win_command: "steamcmd +login anonymous +force_install_dir "C:\servers\squad_server" +workshop_download_item 393380 {{ item }} +quit"
+    with_items: mods
+    register: mod_installation_result
+
+  - name: Copy workshop content from client-specific workshop directory to the server-specific directory
+    win_copy:
+      remote_src: yes
+      src: "C:\\servers\\squad_server\\steamapps\\workshop\\content\\393380"
+      dest: "C:\\servers\\squad_server\\Squad\\Plugins\\Mods\\"
+    when: mod_installation_result.rc == 0
