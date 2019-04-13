@@ -16,14 +16,21 @@
     win_reboot:
     when: choco_result.changed
 
+  - name: Check if squad server directory exists
+    win_stat:
+      path: \"C:\\servers\\squad_server\"
+    register: squad_server_directory
+
+  - name: debug
+    debug:
+      var: squad_server_directory
 
     # Run steamcmd and install Squad
     # Steam game id 403240 is Squad Dedicated Server
     # Steam game id 393380 is Squad Client
   - name: Install and Configure Squad
     win_command: "steamcmd +login anonymous +force_install_dir \"C:\\servers\\squad_server\" +app_update 403240 validate +quit"
-    register: squadinstall_result
-    when: not is-squad-installed
+    when: squad_server_directory is defined
 
   - name: Download mods
     win_command: "steamcmd +login anonymous +force_install_dir \"C:\\servers\\squad_server\" +workshop_download_item 393380 {{ item }} +quit"
