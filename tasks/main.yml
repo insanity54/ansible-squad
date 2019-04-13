@@ -13,10 +13,6 @@
   #   register: choco_result
 
 
-  - name: Reboot if packages were changed
-    win_reboot:
-    when: choco_result.changed
-
 
   - name: Check if squad server directory exists
     win_stat:
