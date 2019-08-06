@@ -12,6 +12,16 @@
   #     creates: ./roles/squad/roles
   #   delegate_to: localhost
 
+  - name: Download chocolatey role from ansible galaxy
+    command: ansible-galaxy install deekayen.chocolatey
+    delegate_to: localhost
+    when: squad_server_os == 'windows'
+
+  - name: Download steamcmd role from ansible galaxy
+    command: ansible-galaxy install siw36.ansible_steamcmd
+    delegate_to: localhost
+    when: squad_server_os == 'linux'
+
   - name: Include WinRM variables for windows os
     include_vars:
       file: winrm.yml
