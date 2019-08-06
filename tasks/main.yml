@@ -5,20 +5,13 @@
   # - include: handlers/windows_handlers.yml
   #   when: squad_server_os == 'windows'
 
-  # - name: download galaxy roles
-  #   command: ansible-galaxy install -r requirements.yml --force -p roles/
-  #   args:
-  #     chdir: ./roles/squad/
-  #     creates: ./roles/squad/roles
-  #   delegate_to: localhost
-
   - name: Download chocolatey role from ansible galaxy
-    command: ansible-galaxy install deekayen.chocolatey -p ../roles/
+    command: ansible-galaxy install deekayen.chocolatey -p roles/
     delegate_to: localhost
     when: squad_server_os == 'windows'
 
   - name: Download steamcmd role from ansible galaxy
-    command: ansible-galaxy install siw36.ansible_steamcmd -p ../roles/
+    command: ansible-galaxy install siw36.ansible_steamcmd -p roles/
     delegate_to: localhost
     when: squad_server_os == 'linux'
 

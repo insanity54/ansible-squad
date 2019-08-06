@@ -38,6 +38,8 @@
 
   - name: Download mods
     win_command: "steamcmd +login anonymous +force_install_dir C:\\servers\\squad_server +workshop_download_item 393380 {{ item }} +quit"
+    args:
+      creates: "C:\\servers\\squad_server\\SquadGame\\Plugins\\Mods\\{{ item }}"
     with_items: "{{ squad_server_mods }}"
     register: mod_installation_result
 

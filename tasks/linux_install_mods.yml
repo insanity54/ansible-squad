@@ -1,26 +1,15 @@
 ---
 
-  - name: Install Helimod
-    shell: /usr/bin/steamcmd +login anonymous +force_install_dir /home/steam/squad-dedicated-server +workshop_download_item 393380 1205163003 +quit
-
-  - name: Install Karkand
-    shell: /usr/bin/steamcmd +login anonymous +force_install_dir /home/steam/squad-dedicated-server +workshop_download_item 393380 1313956617 +quit
+  - name: Install Mods
+    shell: "/usr/bin/steamcmd +login anonymous +force_install_dir /home/steam/squad-dedicated-server +workshop_download_item 393380 {{ item }} +quit"
+    args:
+      creates: /home/steam/squad-dedicated-server/SquadGame/Plugins/Mods/{{ item }}
+    with_items: squad_server_mods
 
   - name: Copy mods from client-specific workshop directory to the server-specific directory
     copy:
       remote_src: yes
-      src: "{{ item.src }}"
-      dest: "{{ item.dest }}"
-    with_items:
-      - {
-        src: "/home/steam/squad-dedicated-server/steamapps/workshop/content/393380/1205163003/", #HelicopterTestMaps",
-        dest: "/home/steam/squad-dedicated-server/SquadGame/Plugins/Mods"
-        }
-      - {
-        src: "/home/steam/squad-dedicated-server/steamapps/workshop/content/393380/1313956617/",
-        dest: "/home/steam/squad-dedicated-server/SquadGame/Plugins/Mods"
-        }
-    tags:
-      - copy
+      src: "/home/steam/squad-dedicated-server/steamapps/workshop/content/393380"
+      dest: "/home/steam/squad-dedicated-server/SquadGame/Plugins/Mods/"
     notify:
       - restart squad
