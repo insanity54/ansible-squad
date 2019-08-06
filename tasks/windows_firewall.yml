@@ -1,0 +1,93 @@
+---
+
+- name: Allow Squad Game Port
+  win_firewall_rule:
+    name: Squad Server game port
+    localport: 7787
+    action: allow
+    direction: in
+    protocol: UDP
+    state: present
+    enabled: yes
+
+- name: Allow Squad Game Port No. 2
+  win_firewall_rule:
+    name: Squad Server game port No. 2
+    localport: 7788
+    action: allow
+    direction: in
+    protocol: UDP
+    state: present
+    enabled: yes
+
+
+- name: Allow Squad Query Port
+  win_firewall_rule:
+    name: Squad Server query port
+    localport: 27165
+    action: allow
+    direction: in
+    protocol: UDP
+    state: present
+    enabled: yes
+
+- name: Allow Squad Query Port No.2
+  win_firewall_rule:
+    name: Squad Server query port No. 2
+    localport: 27166
+    action: allow
+    direction: in
+    protocol: UDP
+    state: present
+    enabled: yes
+
+
+- name: Allow Squad Query Port No. 3 UDP
+  win_firewall_rule:
+    name: Squad Server query port No. 3 UDP
+    localport: 27167
+    action: allow
+    direction: in
+    protocol: UDP
+    state: present
+    enabled: yes
+
+- name: Allow Squad Query Port No. 3 TCP
+  win_firewall_rule:
+    name: Squad Server query port No. 3 TDP
+    localport: 27167
+    action: allow
+    direction: in
+    protocol: TCP
+    state: present
+    enabled: yes
+
+- name: Allow Squad RCON Port TCP
+  win_firewall_rule:
+    name: Squad Server RCON port
+    localport: 21114
+    action: allow
+    direction: in
+    protocol: TCP
+    state: present
+    enabled: yes
+
+- name: Allow Squad RCON port UDP
+  win_firewall_rule:
+    name: Squad Server RCON port
+    localport: 21114
+    action: allow
+    direction: in
+    protocol: UDP
+    state: present
+    enabled: yes
+
+- name: Allow Watchdog management UI
+  win_firewall_rule:
+    name: Watchdog Management Interface
+    localport: 80
+    action: allow
+    direction: in
+    protocol: TCP
+    state: present
+    enabled: yes

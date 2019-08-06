@@ -1,0 +1,29 @@
+---
+
+- name: Create Squad Dedicated Server folder
+  file:
+    path: /home/steam/squad-dedicated-server
+    state: directory
+    owner: steam
+    group: steam
+    mode: 0755
+  become: true
+
+
+- name: Download Squad via steamcmd
+  shell: /usr/bin/steamcmd +login anonymous +force_install_dir /home/steam/squad-dedicated-server +app_update 403240 validate +quit
+  #403240 is Squad Dedicated Server
+
+
+
+- name: Create Squad Server config files
+  win_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: 'templates/server.cfg.j2', dest: '/home/steam/squad-dedicated-server/SquadGame/ServerConfig/Server.cfg' }
+    - { src: 'templates/admins.cfg.j2', dest: '/home/steam/squad-dedicated-server/SquadGame/ServerConfig/Admins.cfg' }
+    - { src: 'templates/bans.cfg.j2', dest: '/home/steam/squad-dedicated-server/SquadGame/ServerConfig/Bans.cfg' }
+    - { src: 'templates/maprotation.cfg.j2', dest: '/home/steam/squad-dedicated-server/SquadGame/ServerConfig/MapRotation.cfg' }
+    - { src: 'templates/servermessages.cfg.j2', dest: '/home/steam/squad-dedicated-server/SquadGame/ServerConfig/ServerMessages.cfg' }
+    - { src: 'templates/rcon.cfg.j2', dest: '/home/steam/squad-dedicated-server/SquadGame/ServerConfig/Rcon.cfg' }

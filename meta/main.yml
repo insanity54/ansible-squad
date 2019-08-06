@@ -1,6 +1,6 @@
 galaxy_info:
   author: Chris Grimmett <chris@grimtech.net>
-  description: An [Ansible](https://www.ansible.com) role to install [Windows - OWI Squad](https://joinsquad.com/)
+  description: An [Ansible](https://www.ansible.com) role to install [OWI Squad](https://joinsquad.com/) on Windows or Ubuntu servers.
 
   license: Unlicense
 
@@ -10,9 +10,19 @@ galaxy_info:
     - name: Windows
       versions:
         - all
+    - name: Ubuntu:
+      versions:
+        - xenial
+        - bionic
 
   galaxy_tags:
     - windows
+    - gameserver
     - game
 
-dependencies: []
+dependencies:
+  - src: deekayen.chocolatey
+    name: chocolatey
+
+  - src: siw36.ansible_steamcmd
+    name: steamcmd

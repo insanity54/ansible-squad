@@ -1,0 +1,98 @@
+---
+
+  - name: Ensure squad server directory exists
+    win_file:
+      path: "{{ item }}"
+      state: directory
+    with_items:
+      - "C:\\servers"
+      - "C:\\servers\\squad_server"
+
+
+  # - name: Check if squad server directory exists
+  #   win_stat:
+  #     path: C:\servers\squad_server\Squad
+  #   register: squad_server_directory
+  #
+  # - name: Check if mods directory exists
+  #   win_stat:
+  #     path: C:\servers\squad_server\SquadGame\Plugins\Mods
+  #   register: squad_mods_directory
+
+
+
+    # Run steamcmd and install Squad
+    # Steam game id 403240 is Squad Dedicated Server
+    # Steam game id 393380 is Squad Client
+  - name: Install and Configure Squad
+    win_command: "steamcmd +login anonymous +force_install_dir C:\\servers\\squad_server +app_update 403240 validate +quit"
+    ignore_errors: yes
+    # when: squad_server_directory.stat.exists == false
+    failed_when: squad_install.rc != 7
+    register: squad_install
+
+  # - name: Fail if "Update complete" did not show up in steamcmd output
+  #   fail:
+  #   when: "'fully installed.' not in squad_install.stdout"
+
+
+  - name: Download mods
+    win_command: "steamcmd +login anonymous +force_install_dir C:\\servers\\squad_server +workshop_download_item 393380 {{ item }} +quit"
+    with_items: "{{ squad_server_mods }}"
+    register: mod_installation_result
+
+
+  - name: Copy workshop content from client-specific workshop directory to the server-specific directory
+    win_copy:
+      remote_src: yes
+      src: "C:\\servers\\squad_server\\steamapps\\workshop\\content\\393380"
+      dest: "C:\\servers\\squad_server\\SquadGame\\Plugins\\Mods\\"
+
+  - name: Create Squad Server config files
+    win_template:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+    with_items:
+      - { src: 'templates/server.cfg.j2', dest: 'C:\servers\squad_server\SquadGame\ServerConfig\Server.cfg' }
+      - { src: 'templates/admins.cfg.j2', dest: 'C:\servers\squad_server\SquadGame\ServerConfig\Admins.cfg' }
+      - { src: 'templates/bans.cfg.j2', dest: 'C:\servers\squad_server\SquadGame\ServerConfig\Bans.cfg' }
+      - { src: 'templates/maprotation.cfg.j2', dest: 'C:\servers\squad_server\SquadGame\ServerConfig\MapRotation.cfg' }
+      - { src: 'templates/servermessages.cfg.j2', dest: 'C:\servers\squad_server\SquadGame\ServerConfig\ServerMessages.cfg' }
+      - { src: 'templates/rcon.cfg.j2', dest: 'C:\servers\squad_server\SquadGame\ServerConfig\Rcon.cfg' }
+
+  - name: Set SQUAD_SERVER_PORT environment variable
+    win_environment:
+      state: present
+      name: SQUAD_SERVER_PORT
+      value: "{{ squad_server_port | default(7787) }}"
+      level: user
+    notify: reboot windows
+
+  - name: Set SQUAD_SERVER_QUERY_PORT environment variable
+    win_environment:
+      state: present
+      name: SQUAD_SERVER_QUERY_PORT
+      value: "{{ squad_server_query_port | default(27165) }}"
+      level: user
+    notify: reboot windows
+
+  # - name: Create Squad Server launcher script
+  #   win_template:
+  #     src: templates/windows_squad_launcher.ps1.j2
+  #     dest: C:\servers\squad_server\launcher.ps1
+
+  - name: Create SquadGameServer.exe System Service
+    win_nssm:
+      name: SquadGameServer
+      description: OWI Squad Dedicated Server
+      application: C:\servers\squad_server\SquadGameServer.exe
+      arguments: "Port={{ squad_server_port }} QueryPort={{ squad_server_query_port }}"
+      state: present
+
+  - name: Ensure SquadGameServer is running
+    win_service:
+      name: SquadGameServer
+      start_mode: auto
+      username: LocalSystem
+      password: ""
+      state: restarted

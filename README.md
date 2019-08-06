@@ -1,11 +1,8 @@
 # ansible-squad
-Install OWI Squad Server on Windows
+
+Install OWI Squad Server on Windows or Linux. Additionally configure the server, and install mods.
 
 
-depends on the following, which are not installed by this playbook
+## Windows notes
 
- - steamcmd
- - vcredist2015
- - vcredist2013
- - vcbuildtools
- - directx
+Because of licensing issues, the user must spin up their own Windows instance configured with WinRM before this playbook will run against it. See https://docs.ansible.com/ansible/latest/user_guide/windows_winrm.html#what-is-winrm

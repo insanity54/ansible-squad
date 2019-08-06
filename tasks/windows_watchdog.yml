@@ -1,0 +1,27 @@
+---
+
+
+  - name: Determine if squad-server-watchdog is already installed
+    win_stat:
+      path: C:\servers\squad-server-watchdog
+    register: squad_watchdog_directory
+
+  - name: Download squad-server-watchdog
+    win_command: git clone https://github.com/insanity54/squad-server-watchdog
+    args:
+      chdir: C:\servers\
+      creates: C:\servers\squad-server-watchdog
+    when: squad_watchdog_directory.stat.exists == False
+
+  - name: Update squad-server-watchdog
+    win_command: git pull
+    args:
+      chdir: C:\servers\squad-server-watchdog\
+    when: squad_watchdog_directory.stat.exists == True
+
+  - name: Set SQUAD_SERVER_WATCHDOG_PORT environment variable
+    win_environment:
+      state: present
+      name: SQUAD_SERVER_WATCHDOG_PORT
+      value: "{{ squad_server_watchdog_port | default(80) }}"
+      level: user

@@ -1,0 +1,12 @@
+---
+
+- name: debug
+  debug:
+    var: "{{ hostvars[server_hostname] }}"
+
+- name: Wait for server to become ready
+  wait_for:
+    port: 22
+    host: "{{ main_ip|default(ansible_host) }}"
+    search_regex: OpenSSH
+  connection: local

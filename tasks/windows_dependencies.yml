@@ -1,0 +1,21 @@
+---
+
+  - name: Install depencency software
+    win_chocolatey:
+      name: '{{ item }}'
+      state: present
+    with_items:
+      - nodejs
+      - git
+      - steamcmd
+      - vcredist2015
+      - vcredist2013
+      - vcbuildtools
+      - directx
+      - nssm
+    register: install_response
+
+
+  - name: Reboot if needed
+    win_reboot:
+    when: install_response.changed == true

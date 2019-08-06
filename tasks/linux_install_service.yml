@@ -1,0 +1,12 @@
+---
+
+  - name: create systemd service
+    template:
+      src: templates/squad.service.j2
+      dest: /etc/systemd/system/squad.service
+    become: yes
+    notify:
+      - enable squad
+      - restart squad
+    tags:
+      - systemd

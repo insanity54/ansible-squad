@@ -1,0 +1,7 @@
+---
+
+
+- name: Wait for server to become ready
+  wait_for_connection:
+    timeout: 1200 # 20 minutes
+    sleep: 60

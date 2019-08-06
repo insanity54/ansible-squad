@@ -1,47 +1,64 @@
 ---
+  - include: handlers/linux_handlers.yml
+    when: squad_server_os == 'linux'
 
-  # handled by another playlist
-  # - name: Install dependencies
-  #   win_chocolatey:
-  #     name:
-  #     with_items:
-  #       - steamcmd
-  #       - vcredist2015
-  #       - vcredist2013
-  #       - vcbuildtools
-  #       - directx
-  #   register: choco_result
+  - include: handlers/windows_handlers.yml
+    when: squad_server_os == 'windows'
 
+  - name: Include WinRM variables for windows os
+    include_vars:
+      file: winrm.yml
+    when: squad_server_os == 'windows'
 
+  - name: Wait for linux host to become ready
+    include: linux_wait.yml
+    when: squad_server_os == 'linux'
 
-  - name: Check if squad server directory exists
-    win_stat:
-      path: C:\\servers\\squad_server
-    register: squad_server_directory
+  - name: Wait for windows host to become ready
+    include: windows_wait.yml
+    when: squad_server_os == 'windows'
 
+  - name: Install dependencies
+    include: linux_dependencies.yml
+    when: squad_server_os == 'linux'
 
-  - name: debug
-    debug:
-      var: squad_server_directory
+  - name: Ensure Chocolatey is installed
+    include_role:
+      name: chocolatey
+    when: squad_server_os == 'windows'
 
+  - name: Install dependencies
+    include: windows_dependencies.yml
+    when: squad_server_os == 'windows'
 
-    # Run steamcmd and install Squad
-    # Steam game id 403240 is Squad Dedicated Server
-    # Steam game id 393380 is Squad Client
-  - name: Install and Configure Squad
-    win_command: "steamcmd +login anonymous +force_install_dir \"C:\\servers\\squad_server\" +app_update 403240 validate +quit"
-    when: squad_server_directory is defined
+  - name: Gather facts
+    setup:
 
+  - name: Install Steamcmd
+    include_role:
+      name: steamcmd
+    when: squad_server_os == 'linux'
 
-  - name: Download mods
-    win_command: "steamcmd +login anonymous +force_install_dir \"C:\\servers\\squad_server\" +workshop_download_item 393380 {{ item }} +quit"
-    with_items: mods
-    register: mod_installation_result
+  - name: Install Squad
+    include: linux_install_squad.yml
+    when: squad_server_os == 'linux'
 
+  - name: Install Mods
+    include: linux_install_mods.yml
+    when: squad_server_os == 'linux'
 
-  - name: Copy workshop content from client-specific workshop directory to the server-specific directory
-    win_copy:
-      remote_src: yes
-      src: "C:\\servers\\squad_server\\steamapps\\workshop\\content\\393380"
-      dest: "C:\\servers\\squad_server\\Squad\\Plugins\\Mods\\"
-    when: mod_installation_result.rc == 0
+  - name: Configure Squad system service
+    include: linux_install_service.yml
+    when: squad_server_os == 'linux'
+
+  - name: Provision Windows with Squad software and other tools
+    include: windows_install_squad.yml
+    when: squad_server_os == 'windows'
+
+  - name: Add Windows Firewall Exceptions
+    include: windows_firewall.yml
+    when: squad_server_os == 'windows'
+
+  - name: Set up Squad Server Watchdog
+    include: windows_watchdog.yml
+    when: squad_server_os == 'windows'
