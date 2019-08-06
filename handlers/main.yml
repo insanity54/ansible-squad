@@ -1,21 +1,9 @@
 ---
-  - name: start squad
-    service:
-      name: squad
-      state: started
-      daemon_reload: yes
-    become: true
-  - name: restart squad
-    service:
-      name: squad
-      state: restarted
-      daemon_reload: yes
-    become: true
-  - name: enable squad
-    service:
-      name: squad
-      enabled: yes
-      daemon_reload: yes
-    become: true
-  - name: reboot windows
-    win_reboot:
+
+  - name: include windows handlers
+    include: ./windows_handlers.yml
+    when: squad_server_os == 'windows'
+
+  - name: include linux handlers
+    include: ./linux_handlers.yml
+    when: squad_server_os == 'linux'
