@@ -24,7 +24,7 @@
 
   - name: Ensure Chocolatey is installed
     include_role:
-      name: chocolatey
+      name: deekayen.chocolatey
     when: squad_server_os == 'windows'
 
   - name: Install dependencies
@@ -34,9 +34,13 @@
   - name: Gather facts
     setup:
 
+  - name: debug the OPERATING SYSTEM
+    debug:
+      var: squad_server_os
+
   - name: Install Steamcmd
     include_role:
-      name: steamcmd
+      name: siw36.ansible_steamcmd
     when: squad_server_os == 'linux'
 
   - name: Install Squad
