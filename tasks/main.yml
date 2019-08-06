@@ -5,12 +5,12 @@
   # - include: handlers/windows_handlers.yml
   #   when: squad_server_os == 'windows'
 
-  - name: download galaxy roles
-    command: ansible-galaxy install -r requirements.yml --force -p roles/
-    args:
-      chdir: ./roles/squad/
-      creates: ./roles/squad/roles
-    delegate_to: localhost
+  # - name: download galaxy roles
+  #   command: ansible-galaxy install -r requirements.yml --force -p roles/
+  #   args:
+  #     chdir: ./roles/squad/
+  #     creates: ./roles/squad/roles
+  #   delegate_to: localhost
 
   - name: Include WinRM variables for windows os
     include_vars:
