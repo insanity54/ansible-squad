@@ -26,6 +26,8 @@
     # Steam game id 393380 is Squad Client
   - name: Install and Configure Squad
     win_command: "steamcmd +login anonymous +force_install_dir C:\\servers\\squad_server +app_update 403240 validate +quit"
+    args:
+      creates: C:\servers\squad_server\SquadGameServer.exe
     ignore_errors: yes
     # when: squad_server_directory.stat.exists == false
     failed_when: squad_install.rc != 7
