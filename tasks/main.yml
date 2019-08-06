@@ -1,12 +1,13 @@
 ---
-  - include: handlers/linux_handlers.yml
-    when: squad_server_os == 'linux'
-
-  - include: handlers/windows_handlers.yml
-    when: squad_server_os == 'windows'
+  # - include: handlers/linux_handlers.yml
+  #   when: squad_server_os == 'linux'
+  #
+  # - include: handlers/windows_handlers.yml
+  #   when: squad_server_os == 'windows'
 
   - name: download galaxy roles
     command: ansible-galaxy install -r requirements.yml --force -p roles/
+    delegate_to: localhost
 
   - name: Include WinRM variables for windows os
     include_vars:
