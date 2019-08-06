@@ -32,7 +32,7 @@ galaxy_info:
 
 dependencies:
   - name: deekayen.chocolatey
-    when: squad_server_os == 'windows'
+    when: False
 
   - name: siw36.ansible_steamcmd
-    when: squad_server_os == 'linux'
+    when: False
