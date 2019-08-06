@@ -7,6 +7,8 @@
 
   - name: download galaxy roles
     command: ansible-galaxy install -r requirements.yml --force -p roles/
+      chdir: ./roles/squad/
+      creates: ./roles/squad/roles
     delegate_to: localhost
 
   - name: Include WinRM variables for windows os
