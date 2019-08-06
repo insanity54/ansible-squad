@@ -31,8 +31,8 @@ galaxy_info:
     - game
 
 dependencies:
-  - src: deekayen.chocolatey
-    name: chocolatey
+  - name: deekayen.chocolatey
+    path: chocolatey
 
-  - src: siw36.ansible_steamcmd
-    name: steamcmd
+  - name: siw36.ansible_steamcmd
+    path: steamcmd
