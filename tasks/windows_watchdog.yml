@@ -11,13 +11,13 @@
     args:
       chdir: C:\servers\
       creates: C:\servers\squad-server-watchdog
-    when: squad_watchdog_directory.stat.exists == False
+    when: not squad_watchdog_directory.stat.exists
 
   - name: Update squad-server-watchdog
     win_command: git pull
     args:
       chdir: C:\servers\squad-server-watchdog\
-    when: squad_watchdog_directory.stat.exists == True
+    when: not squad_watchdog_directory.stat.exists
 
   - name: Set SQUAD_SERVER_WATCHDOG_PORT environment variable
     win_environment:

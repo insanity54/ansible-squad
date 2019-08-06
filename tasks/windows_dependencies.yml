@@ -1,6 +1,6 @@
 ---
 
-  - name: Install depencency software
+  - name: Install dependency software
     win_chocolatey:
       name: '{{ item }}'
       state: present
@@ -13,9 +13,4 @@
       - vcbuildtools
       - directx
       - nssm
-    register: install_response
-
-
-  - name: Reboot if needed
-    win_reboot:
-    when: install_response.changed == true
+    notify: reboot windows
