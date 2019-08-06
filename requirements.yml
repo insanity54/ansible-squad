@@ -1,0 +1,7 @@
+---
+
+- src: deekayen.chocolatey
+  name: chocolatey
+
+- src: siw36.steamcmd
+  name: steamcmd
