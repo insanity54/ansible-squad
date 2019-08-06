@@ -13,12 +13,12 @@
   #   delegate_to: localhost
 
   - name: Download chocolatey role from ansible galaxy
-    command: ansible-galaxy install deekayen.chocolatey
+    command: ansible-galaxy install deekayen.chocolatey -p ../roles/
     delegate_to: localhost
     when: squad_server_os == 'windows'
 
   - name: Download steamcmd role from ansible galaxy
-    command: ansible-galaxy install siw36.ansible_steamcmd
+    command: ansible-galaxy install siw36.ansible_steamcmd -p ../roles/
     delegate_to: localhost
     when: squad_server_os == 'linux'
 
@@ -41,7 +41,7 @@
 
   - name: Ensure Chocolatey is installed
     include_role:
-      name: chocolatey
+      name: deekayen.chocolatey
     when: squad_server_os == 'windows'
 
   - name: Install dependencies
@@ -57,7 +57,7 @@
 
   - name: Install Steamcmd
     include_role:
-      name: steamcmd
+      name: siw36.ansible_steamcmd
     when: squad_server_os == 'linux'
 
   - name: Install Squad
