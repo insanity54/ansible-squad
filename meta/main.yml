@@ -30,7 +30,7 @@ galaxy_info:
     - gameserver
     - game
 
-dependencies:
+dependencies: []
   # - name: deekayen.chocolatey
   #   path: chocolatey
   #
