@@ -30,11 +30,4 @@ galaxy_info:
     - gameserver
     - game
 
-dependencies:
-  - name: deekayen.chocolatey
-    path: chocolatey
-    when: squad_server_os == 'windows'
-
-  - name: siw36.ansible_steamcmd
-    path: steamcmd
-    when: squad_server_os == 'linux'
+dependencies: []
