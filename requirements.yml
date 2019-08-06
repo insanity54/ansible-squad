@@ -1,7 +1,0 @@
----
-
-- src: deekayen.chocolatey
-  name: chocolatey
-
-- src: siw36.ansible_steamcmd
-  name: steamcmd
