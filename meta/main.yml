@@ -2,9 +2,7 @@
 
 galaxy_info:
   author: Chris Grimmett <chris@grimtech.net>
-  description: >
-    An [Ansible](https://www.ansible.com) role to install
-    [OWI Squad](https://joinsquad.com/) Server on Windows or Ubuntu.
+  description: Install OWI Squad Server on Windows or Ubuntu.
 
   license: Unlicense
 
