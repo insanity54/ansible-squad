@@ -1,0 +1,3 @@
+{% for item in squad_server_bans %}
+{{ item.steam_id }}:{{ item.unban_timestamp }} // {{ item.name }} {{ item.reason }}
+{% endfor %}

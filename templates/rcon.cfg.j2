@@ -1,0 +1,5 @@
+IP=0.0.0.0
+Port={{ squad_server_rcon_port | default(21114) }}
+MaxConnections={{ squad_server_rcon_max_connections | default(5) }}
+SecondsBeforeTimeoutCheck={{ squad_server_rcon_seconds_before_timeout_check | default(120) }}
+Password={% if squad_server_rcon_password is defined %}{{ squad_server_rcon_password }}{% endif %}

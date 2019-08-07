@@ -1,0 +1,15 @@
+[Unit]
+Description=Squad Server
+Requires=network.target local-fs.target
+
+[Service]
+User=steam
+Type=simple
+WorkingDirectory=/home/steam
+#ExecStartPre=/bin/bash -c "/usr/bin/steamcmd +login anonymous +force_install_dir /home/steam/ +app_update 403240 validate +quit" # @TODO
+ExecStart=/home/steam/squad-dedicated-server/SquadGameServer.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

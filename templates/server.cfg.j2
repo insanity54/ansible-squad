@@ -1,0 +1,26 @@
+ServerName={{ squad_server_name | default("SquadServersFast.com") }}
+IsLANMatch=false
+ShouldAdvertise={{ "true" if squad_server_should_advertise else "false" }}
+MaxPlayers={{ squad_server_capacity }}
+NumReservedSlots={{ squad_server_num_reserved_slots | default(0) }}
+NumPlayersDiffForTeamChanges={{ squad_server_num_players_diff_for_team_changes | default(3) }}
+AllowTeamChanges={{ "true" if squad_server_allow_team_changes else "false" }}
+PreventTeamChangeIfUnbalanced={{ "true" if squad_server_prevent_team_change_if_unbalanced else "false" }}
+EnforceTeamBalance={{ "true" if squad_server_enforce_team_balance else "false" }}
+RejoinSquadDelayAfterKick={{ squad_server_rejoin_squad_delay_after_kick | default(180) }}
+ServerMessageInterval={{ squad_server_message_interval | default(300) }}
+{% if squad_server_password is defined %}
+ServerPassword={{ squad_server_password }}
+{% endif %}
+AutoTkBanTime={{ squad_server_auto_tk_ban_time | default(1209600) }}
+TKAutoKickEnabled={{ "true" if squad_server_tk_auto_kick_enabled else "false" }} //set to false to disable autokick system, required true for licensed servers.
+RecordDemos=false
+VehicleClaimingDisabled={{ "true" if squad_server_vehicle_claiming_disabled else "false" }}
+VehicleKitRequirementDisabled={{ "true" if squad_server_vehicle_kit_requirement_disabled else "false" }}
+AllowQA=false
+
+
+// Forced on for Licensed servers (Only OWI staff & qa are admins)
+AllowCommunityAdminAccess=false
+// Forced on for Licensed servers (Only OWI devs)
+AllowDevProfiling=false

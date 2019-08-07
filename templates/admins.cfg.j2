@@ -1,0 +1,8 @@
+Group=SuperAdmin:changemap,cheat,private,balance,chat,kick,ban,config,cameraman,debug,pause,featuretest,canseeadminchat,reserve
+Group=Admin:changemap,balance,chat,kick,ban,cameraman,pause,canseeadminchat
+Group=Moderator:changemap,chat,kick,ban,reserve,canseeadminchat
+
+
+{% for item in squad_server_admins %}
+Admin={{ item.steam_id }}:{{ item.admin_group }} // {{ item.name }}
+{% endfor %}
