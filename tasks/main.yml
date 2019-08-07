@@ -59,7 +59,8 @@
 
   - name: Install Mods
     include: linux_install_mods.yml
-    when: squad_server_os == 'linux'
+    when: squad_server_os == 'linux' and squad_server_mods | length > 0
+
 
   - name: Configure Squad system service
     include: linux_install_service.yml

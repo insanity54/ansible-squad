@@ -41,9 +41,10 @@
   - name: Download mods
     win_command: "steamcmd +login anonymous +force_install_dir C:\\servers\\squad_server +workshop_download_item 393380 {{ item }} +quit"
     args:
-      creates: "C:\\servers\\squad_server\\SquadGame\\Plugins\\Mods\\{{ item }}"
+      creates: "C:\\servers\\squad_server\\steamapps\\workshop\\content\\393380\\{{ item }}"
     with_items: "{{ squad_server_mods }}"
     register: mod_installation_result
+    when: squad_server_mods | length > 0
 
 
   - name: Copy workshop content from client-specific workshop directory to the server-specific directory
@@ -51,6 +52,7 @@
       remote_src: yes
       src: "C:\\servers\\squad_server\\steamapps\\workshop\\content\\393380"
       dest: "C:\\servers\\squad_server\\SquadGame\\Plugins\\Mods\\"
+    when: squad_server_mods | length > 0
 
   - name: Create Squad Server config files
     win_template:
