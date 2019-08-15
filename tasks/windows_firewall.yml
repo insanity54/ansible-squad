@@ -62,23 +62,13 @@
     state: present
     enabled: yes
 
-- name: Allow Squad RCON Port TCP
+- name: Allow Squad RCON Port
   win_firewall_rule:
     name: Squad Server RCON port
     localport: 21114
     action: allow
     direction: in
-    protocol: TCP
-    state: present
-    enabled: yes
-
-- name: Allow Squad RCON port UDP
-  win_firewall_rule:
-    name: Squad Server RCON port
-    localport: 21114
-    action: allow
-    direction: in
-    protocol: UDP
+    protocol: any
     state: present
     enabled: yes
 
