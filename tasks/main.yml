@@ -73,6 +73,8 @@
   - name: Add Windows Firewall Exceptions
     include: windows_firewall.yml
     when: squad_server_os == 'windows'
+    tags:
+      - firewall
 
   - name: Set up Squad Server Watchdog
     include: windows_watchdog.yml

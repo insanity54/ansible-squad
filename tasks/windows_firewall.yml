@@ -1,6 +1,6 @@
 ---
 
-- name: Allow SquadGameServer.exe
+- name: Allow UE4Game
   win_firewall_rule:
     name: Squad Server
     program: C:\servers\squad_server\SquadGameServer.exe
@@ -11,10 +11,10 @@
     state: present
 
 
-- name: Allow UE4.exe
+- name: Allow Squad
   win_firewall_rule:
     name: Squad Server
-    program: C:\servers\squad_server\SquadGameServer.exe
+    program: C:\servers\squad_server\SquadGame\Binaries\Win64\SquadGameServer.exe
     direction: in
     protocol: any
     action: allow
