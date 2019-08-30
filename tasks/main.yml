@@ -76,6 +76,6 @@
     tags:
       - firewall
 
-  - name: Set up Squad Server Watchdog
-    include: windows_watchdog.yml
-    when: squad_server_os == 'windows'
+  # - name: Set up Squad Server Watchdog
+  #   include: windows_watchdog.yml
+  #   when: squad_server_os == 'windows'
